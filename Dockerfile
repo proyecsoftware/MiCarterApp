@@ -1,23 +1,23 @@
-# Usa una imagen ligera de Node.js como base
-FROM node:14
+# Utiliza una imagen de node para desarrollo
+FROM node:16-alpine as development
 
-# Establece el directorio de trabajo en la carpeta de la aplicación
-WORKDIR /usr/src/app
+# Establece el directorio de trabajo
+WORKDIR /app
 
-# Copia el archivo package.json y package-lock.json para instalar dependencias
-COPY package*.json ./
+# Copia solo los archivos necesarios para instalar las dependencias
+COPY package.json package-lock.json ./
 
 # Instala las dependencias
+RUN npm install --only=development
 
-
-#  RUN npm install
-RUN npm install
-
-# Copia el resto de la aplicación
+# Copia el resto de los archivos al directorio de trabajo
 COPY . .
 
-# Exponer el puerto en el que tu aplicación Vite se ejecutará (el puerto por defecto es 3000)
+# Construye la aplicación
+RUN npm run build
+
+# Puerto en el que se ejecutará la aplicación en modo desarrollo
 EXPOSE 5173
 
-# Comando para iniciar tu aplicación en modo de producción
+# Comando para iniciar la aplicación en modo desarrollo
 CMD ["npm", "run", "dev"]

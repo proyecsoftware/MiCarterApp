@@ -1,6 +1,14 @@
 import { supabase, ObtenerIdAuthSupabase } from "../index";
 import Swal from "sweetalert2";
+
 export const InsertarUsuarios = async (p) => {
+  try {
+    const { data } = await supabase.from("usuarios").insert(p).select();
+    return data;
+  } catch (error) {}
+};
+
+/* export const InsertarUsuarios = async (p) => {
   try {
     // Verificar si el usuario ya existe
     const idAuthSupabase = await ObtenerIdAuthSupabase();
@@ -22,7 +30,7 @@ export const InsertarUsuarios = async (p) => {
     console.error("Error al insertar usuarios:", error);
     return { error: "Error al insertar usuarios" }; // Puedes retornar un valor específico en caso de error
   }
-};
+}; */
 
 export const MostrarUsuarios = async () => {
   try {
